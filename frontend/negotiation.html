@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Price Negotiation | AI Architecture Platform</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f6fb;color:#172033}
+header{background:#172554;color:white;padding:22px 6%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+header a{color:white;text-decoration:none}
+main{max-width:850px;margin:35px auto;padding:0 20px}
+.panel{background:white;padding:25px;border-radius:14px;margin-bottom:22px;box-shadow:0 5px 22px #0000000b}
+h1{margin-top:0}
+p{color:#64748b;line-height:1.6}
+label{display:block;font-weight:bold;font-size:14px;margin:15px 0 7px}
+input{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px}
+button{background:#2563eb;color:white;border:0;padding:12px 18px;border-radius:8px;cursor:pointer;margin-top:18px}
+button:hover{background:#1d4ed8}
+.result{margin-top:18px;padding:15px;background:#eff6ff;border-radius:8px;white-space:pre-wrap;overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<header>
+  <div><strong>AI Architecture Platform</strong><br><small>Price Negotiation</small></div>
+  <a href="/dashboard">← Back to Dashboard</a>
+</header>
+
+<main>
+  <section class="panel">
+    <h1>Send a Price Offer</h1>
+    <p>Enter a product ID, your client ID and the price you want to offer.</p>
+
+    <form id="offerForm">
+      <label for="product_id">Product ID</label>
+      <input id="product_id" type="number" min="1" value="1" required>
+
+      <label for="client_id">Client ID</label>
+      <input id="client_id" type="number" min="1" value="1" required>
+
+      <label for="offered_price">Your Offer (₹)</label>
+      <input id="offered_price" type="number" min="0.01" step="0.01" placeholder="Enter your offer" required>
+
+      <button type="submit">Send Offer</button>
+    </form>
+    <div id="offerResult" class="result" hidden></div>
+  </section>
+
+  <section class="panel">
+    <h2>Check Negotiation Status</h2>
+    <label for="negotiation_id">Negotiation ID</label>
+    <input id="negotiation_id" type="number" min="1" placeholder="Enter negotiation ID">
+    <button id="checkStatus" type="button">Check Status</button>
+    <div id="statusResult" class="result" hidden></div>
+  </section>
+</main>
+
+<script>
+const offerForm = document.getElementById("offerForm");
+const offerResult = document.getElementById("offerResult");
+const statusResult = document.getElementById("statusResult");
+
+offerForm.addEventListener("submit", async function(event) {
+  event.preventDefault();
+  offerResult.hidden = false;
+  offerResult.textContent = "Sending offer...";
+
+  const params = new URLSearchParams({
+    product_id: document.getElementById("product_id").value,
+    client_id: document.getElementById("client_id").value,
+    offered_price: document.getElementById("offered_price").value
+  });
+
+  const response = await fetch("/negotiation/offer?" + params.toString(), {
+    method: "POST"
+  });
+
+  const data = await response.json();
+  offerResult.textContent = JSON.stringify(data, null, 2);
+
+  if (response.ok && data.negotiation_id) {
+    document.getElementById("negotiation_id").value = data.negotiation_id;
+  }
+});
+
+document.getElementById("checkStatus").addEventListener("click", async function() {
+  const id = document.getElementById("negotiation_id").value;
+
+  if (!id) {
+    statusResult.hidden = false;
+    statusResult.textContent = "Please enter a negotiation ID.";
+    return;
+  }
+
+  statusResult.hidden = false;
+  statusResult.textContent = "Checking status...";
+
+  const response = await fetch("/negotiation/" + encodeURIComponent(id));
+  const data = await response.json();
+  statusResult.textContent = JSON.stringify(data, null, 2);
+});
+</script>
+</body>
+</html>

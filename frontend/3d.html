@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>3D House Visualization</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #eef2f7;
+    color: #1f2937;
+}
+
+.header {
+    background: linear-gradient(135deg, #111827, #2563eb);
+    color: white;
+    padding: 28px 20px;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+.header p {
+    opacity: 0.9;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.info-card {
+    background: white;
+    padding: 18px;
+    border-radius: 14px;
+    text-align: center;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.07);
+}
+
+.info-card h3 {
+    color: #2563eb;
+    margin-bottom: 6px;
+}
+
+.info-card p {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.viewer {
+    background: #111827;
+    border-radius: 18px;
+    padding: 15px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+
+#scene {
+    width: 100%;
+    height: 620px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #dbeafe;
+}
+
+.controls {
+    background: white;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+}
+
+.controls h2 {
+    margin-bottom: 10px;
+}
+
+.controls p {
+    color: #6b7280;
+    line-height: 1.6;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.feature {
+    background: white;
+    padding: 20px;
+    border-radius: 14px;
+    text-align: center;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.07);
+}
+
+.feature .icon {
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+.back {
+    display: inline-block;
+    margin-top: 25px;
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+@media (max-width: 800px) {
+
+    .info-grid,
+    .features {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    #scene {
+        height: 500px;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .info-grid,
+    .features {
+        grid-template-columns: 1fr;
+    }
+
+    #scene {
+        height: 420px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+
+    <h1>🏗️ 3D House Visualization</h1>
+
+    <p>
+        Interactive visualization of the proposed residential design
+    </p>
+
+</div>
+
+<div class="container">
+
+    <div class="info-grid">
+
+        <div class="info-card">
+            <h3>30 × 40 ft</h3>
+            <p>Plot Size</p>
+        </div>
+
+        <div class="info-card">
+            <h3>2 BHK</h3>
+            <p>House Type</p>
+        </div>
+
+        <div class="info-card">
+            <h3>Modern</h3>
+            <p>Design Style</p>
+        </div>
+
+        <div class="info-card">
+            <h3>Ground</h3>
+            <p>Floor</p>
+        </div>
+
+    </div>
+
+    <div class="viewer">
+
+        <div id="scene"></div>
+
+    </div>
+
+    <div class="controls">
+
+        <h2>🎮 Interactive 3D Viewer</h2>
+
+        <p>
+            Use the mouse to rotate the model, scroll to zoom,
+            and drag to explore the house from different angles.
+        </p>
+
+    </div>
+
+    <div class="features">
+
+        <div class="feature">
+            <div class="icon">🛋️</div>
+            <h3>Living Room</h3>
+        </div>
+
+        <div class="feature">
+            <div class="icon">🛏️</div>
+            <h3>2 Bedrooms</h3>
+        </div>
+
+        <div class="feature">
+            <div class="icon">🍳</div>
+            <h3>Kitchen</h3>
+        </div>
+
+        <div class="feature">
+            <div class="icon">🚗</div>
+            <h3>Parking</h3>
+        </div>
+
+    </div>
+
+    <a href="/dashboard" class="back">
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+<script>
+
+const scene = new THREE.Scene();
+
+scene.background = new THREE.Color(0xdbeafe);
+
+const camera = new THREE.PerspectiveCamera(
+    45,
+    document.getElementById("scene").clientWidth /
+    document.getElementById("scene").clientHeight,
+    0.1,
+    1000
+);
+
+camera.position.set(16, 13, 18);
+
+const renderer = new THREE.WebGLRenderer({
+    antialias: true
+});
+
+renderer.setSize(
+    document.getElementById("scene").clientWidth,
+    document.getElementById("scene").clientHeight
+);
+
+renderer.setPixelRatio(window.devicePixelRatio);
+
+document
+    .getElementById("scene")
+    .appendChild(renderer.domElement);
+
+const controls = new THREE.OrbitControls(
+    camera,
+    renderer.domElement
+);
+
+controls.enableDamping = true;
+
+controls.dampingFactor = 0.05;
+
+controls.target.set(0, 2, 0);
+
+const ambientLight = new THREE.AmbientLight(
+    0xffffff,
+    1.2
+);
+
+scene.add(ambientLight);
+
+const directionalLight = new THREE.DirectionalLight(
+    0xffffff,
+    1.5
+);
+
+directionalLight.position.set(
+    10,
+    20,
+    10
+);
+
+scene.add(directionalLight);
+
+const groundGeometry = new THREE.BoxGeometry(
+    24,
+    0.4,
+    20
+);
+
+const groundMaterial = new THREE.MeshStandardMaterial({
+    color: 0x94a3b8
+});
+
+const ground = new THREE.Mesh(
+    groundGeometry,
+    groundMaterial
+);
+
+ground.position.y = -0.2;
+
+scene.add(ground);
+
+function createRoom(
+    x,
+    y,
+    z,
+    width,
+    height,
+    depth,
+    color
+) {
+
+    const geometry = new THREE.BoxGeometry(
+        width,
+        height,
+        depth
+    );
+
+    const material = new THREE.MeshStandardMaterial({
+        color: color,
+        transparent: true,
+        opacity: 0.88
+    });
+
+    const room = new THREE.Mesh(
+        geometry,
+        material
+    );
+
+    room.position.set(
+        x,
+        y,
+        z
+    );
+
+    scene.add(room);
+
+    return room;
+}
+
+createRoom(
+    -4,
+    2,
+    0,
+    7,
+    4,
+    7,
+    0xbfdbfe
+);
+
+createRoom(
+    4,
+    2,
+    0,
+    7,
+    4,
+    7,
+    0xbbf7d0
+);
+
+createRoom(
+    0,
+    2,
+    -6,
+    7,
+    4,
+    5,
+    0xfde68a
+);
+
+createRoom(
+    0,
+    2,
+    6,
+    7,
+    4,
+    5,
+    0xc4b5fd
+);
+
+const roofGeometry = new THREE.BoxGeometry(
+    18,
+    0.5,
+    16
+);
+
+const roofMaterial = new THREE.MeshStandardMaterial({
+    color: 0x334155
+});
+
+const roof = new THREE.Mesh(
+    roofGeometry,
+    roofMaterial
+);
+
+roof.position.set(
+    0,
+    4.3,
+    0
+);
+
+scene.add(roof);
+
+const doorGeometry = new THREE.BoxGeometry(
+    1.5,
+    3,
+    0.3
+);
+
+const doorMaterial = new THREE.MeshStandardMaterial({
+    color: 0x7c2d12
+});
+
+const door = new THREE.Mesh(
+    doorGeometry,
+    doorMaterial
+);
+
+door.position.set(
+    0,
+    1.5,
+    8
+);
+
+scene.add(door);
+
+const windowMaterial = new THREE.MeshStandardMaterial({
+    color: 0x38bdf8
+});
+
+function createWindow(x, y, z) {
+
+    const geometry = new THREE.BoxGeometry(
+        2.2,
+        1.5,
+        0.2
+    );
+
+    const window = new THREE.Mesh(
+        geometry,
+        windowMaterial
+    );
+
+    window.position.set(
+        x,
+        y,
+        z
+    );
+
+    scene.add(window);
+}
+
+createWindow(-4, 2.2, 3.55);
+
+createWindow(4, 2.2, 3.55);
+
+createWindow(-4, 2.2, -3.55);
+
+createWindow(4, 2.2, -3.55);
+
+function animate() {
+
+    requestAnimationFrame(animate);
+
+    controls.update();
+
+    renderer.render(
+        scene,
+        camera
+    );
+}
+
+animate();
+
+window.addEventListener(
+    "resize",
+    function() {
+
+        const container =
+            document.getElementById("scene");
+
+        camera.aspect =
+            container.clientWidth /
+            container.clientHeight;
+
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(
+            container.clientWidth,
+            container.clientHeight
+        );
+
+    }
+);
+
+</script>
+
+</body>
+</html>

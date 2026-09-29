@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Architecture Platform</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            margin-top: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            box-sizing: border-box;
+            border: 1px solid #999;
+            border-radius: 5px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            background: #222;
+            color: white;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background: #444;
+        }
+
+        button:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+
+        .generate-btn {
+            margin-top: 25px;
+        }
+
+        #status {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        #designs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-top: 30px;
+        }
+
+        .design-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .design-card h2 {
+            font-size: 20px;
+        }
+
+        .design-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+            display: block;
+        }
+
+        .select-btn {
+            width: 100%;
+            margin-top: 12px;
+        }
+
+        .select-btn.selected {
+            background: green;
+        }
+
+        #selectedDesign {
+            margin-top: 25px;
+            padding: 15px;
+            background: #e8f5e9;
+            border-radius: 8px;
+            font-weight: bold;
+            display: none;
+        }
+
+        #confirmButton {
+            margin-top: 15px;
+        }
+
+        #confirmButton.confirmed {
+            background: green;
+        }
+
+        #customizationBox {
+            margin-top: 35px;
+            padding: 25px;
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            display: none;
+        }
+
+        #customizationBox h2 {
+            margin-top: 0;
+        }
+
+        #customStatus {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .custom-field {
+            margin-top: 18px;
+        }
+
+        .save-btn {
+            margin-top: 20px;
+        }
+
+        @media (max-width: 800px) {
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #designs {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <h1>
+        AI Architecture & Interior Design
+    </h1>
+
+<div style="margin-bottom:25px;">
+    <label>Describe Your House Requirement</label>
+
+    <textarea
+        id="aiRequirement"
+        rows="5"
+        placeholder="Example: Mujhe 30x40 feet ke East facing plot par 2 bedroom ka modern ghar chahiye. Ground floor, 2 bathrooms, car parking, balcony, pooja room aur Vastu follow karna hai."
+    ></textarea>
+
+    <button
+        type="button"
+        onclick="parseRequirements()"
+        style="margin-top:12px;"
+    >
+        ✨ Understand Requirement with AI
+    </button>
+</div>
+
+<div
+    id="aiRequirements"
+    style="
+        display:none;
+        margin-bottom:25px;
+        padding:18px;
+        background:#eef7ff;
+        border-radius:10px;
+        border:1px solid #c8e3ff;
+    "
+></div>
+    <div class="form-grid">
+
+
+        <div>
+
+            <label>
+                Property Type
+            </label>
+
+            <select id="property_type">
+
+                <option value="Individual House">
+                    Individual House
+                </option>
+
+                <option value="Bungalow">
+                    Bungalow
+                </option>
+
+                <option value="Flat">
+                    Flat
+                </option>
+
+                <option value="Apartment">
+                    Apartment
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div>
+
+            <label>
+                Plot Length
+            </label>
+
+            <input
+                type="text"
+                id="plot_length"
+                value="40 ft"
+                placeholder="40 ft"
+            >
+
+        </div>
+
+
+        <div>
+
+            <label>
+                Plot Width
+            </label>
+
+            <input
+                type="text"
+                id="plot_width"
+                value="30 ft"
+                placeholder="30 ft"
+            >
+
+        </div>
+
+
+        <div>
+
+            <label>
+                Bedrooms
+            </label>
+
+            <select id="bedrooms">
+
+                <option value="1">
+                    1 Bedroom
+                </option>
+
+                <option value="2">
+                    2 Bedrooms
+                </option>
+
+                <option value="3">
+                    3 Bedrooms
+                </option>
+
+                <option value="4">
+                    4 Bedrooms
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div>
+
+            <label>
+                Bathrooms
+            </label>
+
+            <select id="bathrooms">
+
+                <option value="1">
+                    1 Bathroom
+                </option>
+
+                <option value="2">
+                    2 Bathrooms
+                </option>
+
+                <option value="3">
+                    3 Bathrooms
+                </option>
+
+                <option value="4">
+                    4 Bathrooms
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div>
+
+            <label>
+                Floors
+            </label>
+
+            <select id="floors">
+
+                <option value="Ground Floor">
+                    Ground Floor
+                </option>
+
+                <option value="G+1">
+                    G+1
+                </option>
+
+                <option value="G+2">
+                    G+2
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div>
+
+            <label>
+                Style
+            </label>
+
+            <select id="style">
+
+                <option value="Modern">
+                    Modern
+                </option>
+
+                <option value="Minimal">
+                    Minimal
+                </option>
+
+                <option value="Luxury">
+                    Luxury
+                </option>
+
+                <option value="Traditional">
+                    Traditional
+                </option>
+
+            </select>
+
+        </div>
+
+
+    </div>
+
+
+    <button
+        class="generate-btn"
+        onclick="generateDesigns()"
+    >
+        Generate 3 Designs
+    </button>
+
+
+    <div id="status"></div>
+
+
+    <div id="designs"></div>
+
+
+    <div id="selectedDesign"></div>
+
+
+    <button
+        id="confirmButton"
+        onclick="confirmSelectedDesign()"
+        disabled
+    >
+        Confirm Selected Design
+    </button>
+
+
+    <div id="customizationBox">
+
+
+        <h2>
+            Customize Your Design
+        </h2>
+
+
+        <div class="custom-field">
+
+            <label>
+                Select Room
+            </label>
+
+            <select id="customRoom">
+
+                <option value="Living Room">
+                    Living Room
+                </option>
+
+                <option value="Bedroom">
+                    Bedroom
+                </option>
+
+                <option value="Kitchen">
+                    Kitchen
+                </option>
+
+                <option value="Bathroom">
+                    Bathroom
+                </option>
+
+                <option value="Dining Room">
+                    Dining Room
+                </option>
+
+                <option value="Balcony">
+                    Balcony
+                </option>
+
+                <option value="Exterior">
+                    Exterior
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="custom-field">
+
+            <label>
+                Customization Request
+            </label>
+
+            <textarea
+                id="customRequest"
+                rows="5"
+                placeholder="Example: Make the living room modern with wooden flooring, a large sofa and warm lighting."
+            ></textarea>
+
+        </div>
+
+
+        <button
+            class="save-btn"
+            onclick="saveCustomization()"
+        >
+            Save Customization
+        </button>
+
+
+        <div id="customStatus"></div>
+
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+let selectedDesignId = null;
+let parsedRequirements = null;
+
+
+async function parseRequirements() {
+
+    const message = document.getElementById("aiRequirement").value.trim();
+    const status = document.getElementById("status");
+    const resultBox = document.getElementById("aiRequirements");
+
+    if (!message) {
+        alert("Please describe your house requirement first.");
+        return;
+    }
+
+    status.innerHTML = "🤖 AI is understanding your requirements...";
+
+    try {
+
+        const params = new URLSearchParams({
+            message: message,
+            language: "Hindi"
+        });
+
+        const response = await fetch(
+            "http://127.0.0.1:8000/design/parse?" + params.toString(),
+            {
+                method: "POST"
+            }
+        );
+
+        const data = await response.json();
+
+        console.log("PARSE RESPONSE:", data);
+
+        if (!response.ok) {
+
+            status.innerHTML =
+                "Error: " +
+                (data.detail || "Requirement parsing failed.");
+
+            return;
+        }
+
+        parsedRequirements = data.requirements;
+
+        document.getElementById("property_type").value =
+            "Individual House";
+
+        document.getElementById("plot_length").value =
+            parsedRequirements.plot_length
+                ? parsedRequirements.plot_length + " ft"
+                : "";
+
+        document.getElementById("plot_width").value =
+            parsedRequirements.plot_width
+                ? parsedRequirements.plot_width + " ft"
+                : "";
+
+        document.getElementById("bedrooms").value =
+            parsedRequirements.bedrooms || "2";
+
+        document.getElementById("bathrooms").value =
+            parsedRequirements.bathrooms || "2";
+
+        if (
+            parsedRequirements.floors === "Ground" ||
+            parsedRequirements.floors === "Ground Floor" ||
+            parsedRequirements.floors === "1"
+        ) {
+            document.getElementById("floors").value =
+                "Ground Floor";
+        }
+
+        const style = (parsedRequirements.style || "").toLowerCase();
+
+        if (style.includes("modern")) {
+            document.getElementById("style").value = "Modern";
+        } else if (style.includes("minimal")) {
+            document.getElementById("style").value = "Minimal";
+        } else if (style.includes("luxury")) {
+            document.getElementById("style").value = "Luxury";
+        } else if (style.includes("traditional")) {
+            document.getElementById("style").value = "Traditional";
+        }
+
+        resultBox.style.display = "block";
+
+        resultBox.innerHTML = `
+            <h3>✓ AI Understood Your Requirements</h3>
+
+            <p><strong>Property:</strong>
+            ${parsedRequirements.property_type || "House"}</p>
+
+            <p><strong>Plot:</strong>
+            ${parsedRequirements.plot_length || "-"} ×
+            ${parsedRequirements.plot_width || "-"} ft</p>
+
+            <p><strong>Bedrooms:</strong>
+            ${parsedRequirements.bedrooms || "-"}</p>
+
+            <p><strong>Bathrooms:</strong>
+            ${parsedRequirements.bathrooms || "-"}</p>
+
+            <p><strong>Floors:</strong>
+            ${parsedRequirements.floors || "-"}</p>
+
+            <p><strong>Style:</strong>
+            ${parsedRequirements.style || "-"}</p>
+
+            <p><strong>Parking:</strong>
+            ${parsedRequirements.parking ? "Yes" : "No"}</p>
+
+            <p><strong>Balcony:</strong>
+            ${parsedRequirements.balcony ? "Yes" : "No"}</p>
+
+            <p><strong>Pooja Room:</strong>
+            ${parsedRequirements.pooja_room ? "Yes" : "No"}</p>
+
+            <p><strong>Facing:</strong>
+            ${parsedRequirements.facing || "-"}</p>
+
+            <p><strong>Vastu:</strong>
+            ${parsedRequirements.vastu ? "Yes" : "No"}</p>
+        `;
+
+        status.innerHTML =
+            "✓ Requirements understood successfully. You can now generate 3 designs.";
+
+    }
+
+    catch (error) {
+
+        console.error("PARSE ERROR:", error);
+
+        status.innerHTML =
+            "Connection error. Please check FastAPI server.";
+    }
+}
+
+
+async function generateDesigns() {
+
+    const status =
+        document.getElementById("status");
+
+    const designsContainer =
+        document.getElementById("designs");
+
+    const selectedDesign =
+        document.getElementById("selectedDesign");
+
+    const confirmButton =
+        document.getElementById("confirmButton");
+
+    const customizationBox =
+        document.getElementById("customizationBox");
+
+    status.innerHTML =
+        "🏠 Creating 3 AI design options...";
+
+    designsContainer.innerHTML = "";
+
+    selectedDesign.style.display = "none";
+
+    customizationBox.style.display = "none";
+
+    selectedDesignId = null;
+
+    confirmButton.disabled = true;
+
+    confirmButton.innerHTML =
+        "Confirm Selected Design";
+
+    confirmButton.classList.remove("confirmed");
+
+    const plotLength =
+        document.getElementById("plot_length").value
+        .replace(/[^\d.]/g, "");
+
+    const plotWidth =
+        document.getElementById("plot_width").value
+        .replace(/[^\d.]/g, "");
+
+    const params =
+        new URLSearchParams({
+
+            property_id: "1",
+
+            property_type: "house",
+
+            plot_length: plotLength,
+
+            plot_width: plotWidth,
+
+            bedrooms:
+                document.getElementById("bedrooms").value,
+
+            bathrooms:
+                document.getElementById("bathrooms").value,
+
+            floors:
+                document.getElementById("floors").value,
+
+            style:
+                document.getElementById("style").value,
+
+            parking:
+                parsedRequirements
+                    ? parsedRequirements.parking
+                    : true,
+
+            balcony:
+                parsedRequirements
+                    ? parsedRequirements.balcony
+                    : true,
+
+            pooja_room:
+                parsedRequirements
+                    ? parsedRequirements.pooja_room
+                    : false
+
+        });
+
+
+    try {
+
+        const response =
+            await fetch(
+                "http://127.0.0.1:8000/design/generate?" +
+                params.toString(),
+                {
+                    method: "POST"
+                }
+            );
+
+        const data =
+            await response.json();
+
+        console.log(
+            "GENERATE RESPONSE:",
+            response.status,
+            data
+        );
+
+        if (!response.ok) {
+
+            status.innerHTML =
+                "Error: " +
+                (
+                    data.detail ||
+                    "Design generation failed."
+                );
+
+            return;
+        }
+
+        status.innerHTML =
+            "✓ 3 design options generated successfully.";
+
+        data.designs.forEach(
+            function(design) {
+
+                const card =
+                    document.createElement("div");
+
+                card.className =
+                    "design-card";
+
+                const imageUrl =
+                    "http://127.0.0.1:8000" +
+                    design.image_url;
+
+                card.innerHTML = `
+
+                    <h2>
+                        Design Option ${design.option}
+                    </h2>
+
+                    <img
+                        src="${imageUrl}"
+                        alt="House Design ${design.option}"
+                        onerror="
+                            this.style.display='none';
+                            this.parentElement.innerHTML +=
+                            '<div style=\\'height:250px;display:flex;align-items:center;justify-content:center;background:#eee;border-radius:8px;font-size:18px;\\'>AI Design Preview ${design.option}</div>';
+                        "
+                    >
+
+                    <p>
+                        ${getDesignDescription(design.option)}
+                    </p>
+
+                    <button
+                        class="select-btn"
+                        onclick="
+                            selectDesign(
+                                ${design.id},
+                                this
+                            )
+                        "
+                    >
+                        Select Design
+                    </button>
+
+                `;
+
+                designsContainer.appendChild(card);
+            }
+        );
+
+        window.scrollTo({
+            top: designsContainer.offsetTop - 50,
+            behavior: "smooth"
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "GENERATE ERROR:",
+            error
+        );
+
+        status.innerHTML =
+            "Connection error. Please check FastAPI server.";
+    }
+}
+
+
+function getDesignDescription(option) {
+
+    if (option === 1) {
+        return "Optimized space planning with practical room connectivity.";
+    }
+
+    if (option === 2) {
+        return "Alternative layout focused on privacy and natural movement.";
+    }
+
+    return "Modern layout concept with balanced spaces and circulation.";
+}
+
+
+function selectDesign(
+    designId,
+    button
+) {
+
+    selectedDesignId =
+        designId;
+
+    document
+        .querySelectorAll(
+            ".select-btn"
+        )
+        .forEach(
+            function(btn) {
+
+                btn.classList.remove(
+                    "selected"
+                );
+
+                btn.innerHTML =
+                    "Select Design";
+            }
+        );
+
+    button.classList.add(
+        "selected"
+    );
+
+    button.innerHTML =
+        "✓ Design Selected";
+
+    const selectedDesign =
+        document.getElementById(
+            "selectedDesign"
+        );
+
+    selectedDesign.style.display =
+        "block";
+
+    selectedDesign.innerHTML =
+        "Selected Design ID: " +
+        selectedDesignId;
+
+    document.getElementById(
+        "confirmButton"
+    ).disabled = false;
+}
+
+
+async function confirmSelectedDesign() {
+
+    const button =
+        document.getElementById(
+            "confirmButton"
+        );
+
+    const customizationBox =
+        document.getElementById(
+            "customizationBox"
+        );
+
+    if (!selectedDesignId) {
+
+        alert(
+            "Please select a design first."
+        );
+
+        return;
+    }
+
+    button.disabled = true;
+
+    button.innerHTML =
+        "Confirming...";
+
+    try {
+
+        const response =
+            await fetch(
+                "http://127.0.0.1:8000/design/confirm/" +
+                selectedDesignId,
+                {
+                    method: "POST"
+                }
+            );
+
+        const data =
+            await response.json();
+
+        console.log(
+            "CONFIRM RESPONSE:",
+            response.status,
+            data
+        );
+
+        if (!response.ok) {
+
+            button.disabled = false;
+
+            button.innerHTML =
+                "Confirm Selected Design";
+
+            alert(
+                "Confirmation failed:\n" +
+                (
+                    data.detail ||
+                    "Unknown error"
+                )
+            );
+
+            return;
+        }
+
+        document.getElementById(
+            "selectedDesign"
+        ).innerHTML =
+            "✓ Design Option " +
+            data.option +
+            " confirmed successfully.";
+
+        button.innerHTML =
+            "✓ Design Confirmed";
+
+        button.classList.add(
+            "confirmed"
+        );
+
+        customizationBox.style.display =
+            "block";
+
+        alert(
+            "Design confirmed successfully!"
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "CONFIRM ERROR:",
+            error
+        );
+
+        button.disabled = false;
+
+        button.innerHTML =
+            "Confirm Selected Design";
+
+        alert(
+            "Connection error. Make sure FastAPI server is running."
+        );
+    }
+}
+
+
+async function saveCustomization() {
+
+    if (!selectedDesignId) {
+
+        alert(
+            "Please confirm a design first."
+        );
+
+        return;
+    }
+
+    const room =
+        document.getElementById(
+            "customRoom"
+        ).value;
+
+    const request =
+        document.getElementById(
+            "customRequest"
+        ).value.trim();
+
+    const customStatus =
+        document.getElementById(
+            "customStatus"
+        );
+
+    if (!request) {
+
+        alert(
+            "Please enter your customization request."
+        );
+
+        return;
+    }
+
+    customStatus.innerHTML =
+        "Saving customization...";
+
+    const params =
+        new URLSearchParams({
+
+            design_id:
+                selectedDesignId,
+
+            room:
+                room,
+
+            customization_request:
+                request
+        });
+
+
+    try {
+
+        const response =
+            await fetch(
+                "http://127.0.0.1:8000/design/customize?" +
+                params.toString(),
+                {
+                    method: "POST"
+                }
+            );
+
+        const data =
+            await response.json();
+
+        console.log(
+            "CUSTOMIZATION RESPONSE:",
+            response.status,
+            data
+        );
+
+        if (!response.ok) {
+
+            customStatus.innerHTML =
+                "Error: " +
+                (
+                    data.detail ||
+                    "Customization failed."
+                );
+
+            return;
+        }
+
+        customStatus.innerHTML =
+            "✓ Customization request saved successfully.";
+
+        document.getElementById(
+            "customRequest"
+        ).value = "";
+
+        alert(
+            "Customization saved successfully!"
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "CUSTOMIZATION ERROR:",
+            error
+        );
+
+        customStatus.innerHTML =
+            "Connection error. Please check FastAPI server.";
+    }
+
+}
+
+</script>
+
+
+</body>
+
+</html>

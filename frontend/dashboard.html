@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AI Architecture Platform</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f4f7fb;
+    color: #1f2937;
+}
+
+.header {
+    background: linear-gradient(135deg, #111827, #2563eb);
+    color: white;
+    padding: 35px 50px;
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: auto;
+}
+
+.header h1 {
+    font-size: 34px;
+    margin-bottom: 10px;
+}
+
+.header p {
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 35px auto;
+    padding: 0 20px;
+}
+
+.section-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.workflow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.workflow-step {
+    background: white;
+    padding: 20px;
+    border-radius: 14px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+}
+
+.workflow-step .number {
+    width: 40px;
+    height: 40px;
+    margin: auto auto 10px;
+    border-radius: 50%;
+    background: #2563eb;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.workflow-step h3 {
+    font-size: 16px;
+    margin-bottom: 6px;
+}
+
+.workflow-step p {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.modules {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.card {
+    background: white;
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.08);
+    transition: 0.25s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.icon {
+    font-size: 38px;
+    margin-bottom: 15px;
+}
+
+.card h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.card p {
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 65px;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 11px 18px;
+    background: #2563eb;
+    color: white;
+    text-decoration: none;
+    border-radius: 9px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: #1d4ed8;
+}
+
+.status {
+    margin-top: 40px;
+    background: #111827;
+    color: white;
+    padding: 22px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.status span {
+    color: #4ade80;
+    font-weight: bold;
+}
+
+.footer {
+    text-align: center;
+    padding: 30px;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+@media (max-width: 900px) {
+    .modules {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .workflow {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .modules,
+    .workflow {
+        grid-template-columns: 1fr;
+    }
+
+    .header {
+        padding: 30px 20px;
+    }
+
+    .header h1 {
+        font-size: 27px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="header-content">
+        <h1>🏠 AI Architecture Platform</h1>
+        <p>AI-powered House Design, Interior Planning & Local Product Marketplace</p>
+    </div>
+</div>
+
+<div class="container">
+
+    <h2 class="section-title">AI Design Workflow</h2>
+
+    <div class="workflow">
+
+        <div class="workflow-step">
+            <div class="number">1</div>
+            <h3>Requirement</h3>
+            <p>Understand user's house requirements</p>
+        </div>
+
+        <div class="workflow-step">
+            <div class="number">2</div>
+            <h3>AI Design</h3>
+            <p>Generate three design options</p>
+        </div>
+
+        <div class="workflow-step">
+            <div class="number">3</div>
+            <h3>Visualization</h3>
+            <p>Explore 2D and 3D designs</p>
+        </div>
+
+        <div class="workflow-step">
+            <div class="number">4</div>
+            <h3>Marketplace</h3>
+            <p>Find products and local vendors</p>
+        </div>
+
+    </div>
+
+    <h2 class="section-title">Platform Modules</h2>
+
+    <div class="modules">
+
+        <div class="card">
+            <div class="icon">🏠</div>
+            <h3>AI House Design</h3>
+            <p>
+                Convert natural-language requirements into
+                personalized house design options.
+            </p>
+            <a href="/frontend/property.html" class="btn">
+                Start Designing
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="icon">🤖</div>
+            <h3>AI Architecture Assistant</h3>
+            <p>
+                Ask questions about architecture, interiors,
+                materials, layouts and space planning.
+            </p>
+            <a href="/frontend/chatbot.html" class="btn">
+                Open AI Assistant
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="icon">📐</div>
+            <h3>2D Floor Plan</h3>
+            <p>
+                Visualize room arrangement and
+                technical floor planning.
+            </p>
+            <a href="/frontend/floorplan.html" class="btn">
+                View Floor Plan
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="icon">🏗️</div>
+            <h3>3D Visualization</h3>
+            <p>
+                Explore an interactive 3D representation
+                of the designed space.
+            </p>
+            <a href="/frontend/3d.html" class="btn">
+                Open 3D View
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="icon">👁️</div>
+            <h3>AI Object Detection</h3>
+            <p>
+                Detect furniture and interior objects
+                from uploaded images.
+            </p>
+            <a class="btn" href="/frontend/vision.html">Open Object Detection</a>
+        </div>
+
+        <div class="card">
+            <div class="icon">🛍️</div>
+            <h3>Product Recommendation</h3>
+            <p>
+                Connect detected objects with
+                relevant products from merchants.
+            </p>
+            <a class="btn" href="/frontend/recommendation.html">Find Products</a>
+        </div>
+
+        <div class="card">
+            <div class="icon">📍</div>
+            <h3>Nearby Vendors</h3>
+            <p>
+                Find local merchants and products
+                based on location.
+            </p>
+            <a class="btn" href="/frontend/nearby-vendors.html">View Vendors</a>
+        </div>
+
+        <div class="card">
+            <div class="icon">💬</div>
+            <h3>Price Negotiation</h3>
+            <p>
+                Allow customers and merchants to
+                negotiate product prices.
+            </p>
+            <a class="btn" href="/frontend/negotiation.html">Start Negotiation</a>
+        </div>
+
+        <div class="card">
+            <div class="icon">🏪</div>
+            <h3>Merchant Portal</h3>
+            <p>
+                Merchants can manage their products,
+                prices and available stock.
+            </p>
+           <a class="btn" href="/frontend/merchant.html">Merchant Portal</a>
+        </div>
+
+    </div>
+
+    <div class="status">
+        Backend Status: <span>● Connected</span>
+        &nbsp; | &nbsp;
+        AI Architecture Platform
+    </div>
+
+</div>
+
+<div class="footer">
+    AI Architecture Platform • Intelligent Design • Visualization • Marketplace
+</div>
+
+</body>
+</html>

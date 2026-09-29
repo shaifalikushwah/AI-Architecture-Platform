@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Merchant Dashboard</title>
+
+<style>
+
+body {
+    font-family: Arial;
+    margin: 30px;
+}
+
+input,
+textarea,
+button {
+    display: block;
+    margin: 10px 0;
+    padding: 10px;
+    width: 400px;
+}
+
+button {
+    cursor: pointer;
+}
+
+.product {
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Merchant Dashboard</h1>
+
+<h2>Create Merchant</h2>
+
+<input id="business" placeholder="Business Name">
+
+<input id="owner" placeholder="Owner Name">
+
+<input id="email" placeholder="Email">
+
+<input id="phone" placeholder="Phone">
+
+<input id="location" placeholder="Location">
+
+<input id="latitude" placeholder="Latitude">
+
+<input id="longitude" placeholder="Longitude">
+
+<textarea id="description"
+placeholder="Business Description"></textarea>
+
+<button onclick="createMerchant()">
+Create Merchant
+</button>
+
+<p id="merchantResult"></p>
+
+<hr>
+
+<h2>Add Product</h2>
+
+<input id="merchantId"
+placeholder="Merchant ID">
+
+<input id="productName"
+placeholder="Product Name">
+
+<input id="category"
+placeholder="Category">
+
+<input id="price"
+placeholder="Price">
+
+<input id="stock"
+placeholder="Stock">
+
+<textarea id="productDescription"
+placeholder="Description"></textarea>
+
+<button onclick="addProduct()">
+Add Product
+</button>
+
+<p id="productResult"></p>
+
+<script>
+
+const API =
+"http://127.0.0.1:8000";
+
+async function createMerchant() {
+
+    const params =
+        new URLSearchParams({
+
+        business_name:
+            document.getElementById(
+                "business"
+            ).value,
+
+        owner_name:
+            document.getElementById(
+                "owner"
+            ).value,
+
+        email:
+            document.getElementById(
+                "email"
+            ).value,
+
+        phone:
+            document.getElementById(
+                "phone"
+            ).value,
+
+        location:
+            document.getElementById(
+                "location"
+            ).value,
+
+        latitude:
+            document.getElementById(
+                "latitude"
+            ).value,
+
+        longitude:
+            document.getElementById(
+                "longitude"
+            ).value,
+
+        description:
+            document.getElementById(
+                "description"
+            ).value
+    });
+
+    const response =
+        await fetch(
+            `${API}/merchant/create?${params}`
+        );
+
+    const data =
+        await response.json();
+
+    document.getElementById(
+        "merchantResult"
+    ).innerText =
+        JSON.stringify(data);
+}
+
+
+async function addProduct() {
+
+    const params =
+        new URLSearchParams({
+
+        merchant_id:
+            document.getElementById(
+                "merchantId"
+            ).value,
+
+        product_name:
+            document.getElementById(
+                "productName"
+            ).value,
+
+        category:
+            document.getElementById(
+                "category"
+            ).value,
+
+        price:
+            document.getElementById(
+                "price"
+            ).value,
+
+        stock:
+            document.getElementById(
+                "stock"
+            ).value,
+
+        description:
+            document.getElementById(
+                "productDescription"
+            ).value
+    });
+
+    const response =
+        await fetch(
+            `${API}/merchant/product?${params}`,
+            {
+                method: "POST"
+            }
+        );
+
+    const data =
+        await response.json();
+
+    document.getElementById(
+        "productResult"
+    ).innerText =
+        JSON.stringify(data);
+}
+
+</script>
+
+</body>
+
+</html>
